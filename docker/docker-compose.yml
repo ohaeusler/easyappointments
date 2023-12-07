@@ -5,8 +5,6 @@ services:
         container_name: easyappointments-database
         volumes:
             - db:/var/lib/mysql
-        env-file:
-            - stack.env
         environment:
             - MYSQL_ROOT_PASSWORD=$dbpw
             - MYSQL_DATABASE=$dbdb
