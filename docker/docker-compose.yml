@@ -4,18 +4,24 @@ services:
         image: mysql:5.7
         container_name: easyappointments-database
         volumes:
-            - ./mysql:/var/lib/mysql
+            - db:/var/lib/mysql
+        env-file:
+            - stack.env
         environment:
-            - MYSQL_ROOT_PASSWORD=root
-            - MYSQL_DATABASE=easyappointments
-        ports:
-            - "8001:3306"
+            - MYSQL_ROOT_PASSWORD=$dbpw
+            - MYSQL_DATABASE=$dbdb
     server:
         build: ./server
         image: easyappointments-server:v1
         container_name: easyappointments-server
-        ports:
-            - "8000:80"
+        networks:
+          - nginx-proxy-manager
         volumes:
             - ../:/var/www/html
             - ./server/php.ini:/usr/local/etc/php/conf.d/99-overrides.ini
+networks:
+  nginx-proxy-manager:
+    external: true
+volumes:
+  db:
+  
